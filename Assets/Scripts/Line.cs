@@ -7,6 +7,7 @@ public class Line : MonoBehaviour
     // LineRenderer instance (just line).
     public LineRenderer line;
 
+    // Start is called before the first frame update
     public void Start()
     {
         // Get LineRenderer component and initialize the line.
