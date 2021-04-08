@@ -9,18 +9,13 @@ public class Rectangle : MonoBehaviour, IPooledObject
     // Dictionary which contains connection lines and their points connected to the rectangle.
     public Dictionary<GameObject, int> connections;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        // Get SpriteRenderer component and initialize the sprite.
-        sprite = GetComponent<SpriteRenderer>();
-    }
-
     // OnObjectSpawn is called when the object is spawned.
     public void OnObjectSpawn()
     {
+        // Get SpriteRenderer component and initialize the sprite.
+        sprite = GetComponent<SpriteRenderer>();
         // Create and set new color to the sprite
-        Color newColor = new Color(Random.Range(0, 256), Random.Range(0, 256), Random.Range(0, 256));
+        Color newColor = new Color(Random.Range(0.0f, 1f), Random.Range(0.0f, 1f), Random.Range(0.0f, 1f));
         sprite.color = newColor;
     }
 }
