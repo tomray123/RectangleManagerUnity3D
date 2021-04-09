@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2280763069531517333}
   - component: {fileID: 2280763069531517335}
   - component: {fileID: 2280763069531517334}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rectangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2280763069531517330}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -118,6 +118,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf3d164b7682fbd4388cf36d84fefeb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isChecker: 0
+  canSpawn: 0
+  spawnTag: 
 --- !u!61 &2280763069531517334
 BoxCollider2D:
   m_ObjectHideFlags: 0
