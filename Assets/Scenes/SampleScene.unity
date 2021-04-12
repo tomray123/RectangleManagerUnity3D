@@ -181,6 +181,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1959622d69e925e448c7883c253a81ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeBetweenClicks: 0
+  isFirstClick: 0
+  firstClickPosition: {x: 0, y: 0}
+  secondClickPosition: {x: 0, y: 0}
+  maxDoubleClickDistance: 1
+  maxTimeBetweenClicks: 0.3
+  MaxRayLength: 15
+  isDragging: 0
+  activeObject: {fileID: 0}
+  objectStartPosition: {x: 0, y: 0}
+  isDrawingConnection: 0
+  drawingLine: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -296,10 +308,10 @@ MonoBehaviour:
   pools:
   - tag: rect
     prefab: {fileID: 2280763069531517330, guid: 8f23566b6ce61f948a80dc7efd28456e, type: 3}
-    size: 5
+    size: 3
   - tag: line
     prefab: {fileID: 8281502106212425828, guid: 9fbf842711b903846a8aa06c1a276cc7, type: 3}
-    size: 10
+    size: 5
 --- !u!4 &1273003410
 Transform:
   m_ObjectHideFlags: 0
@@ -308,7 +320,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1273003408}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.99931073, y: -0.2928253, z: -0.8580215}
+  m_LocalPosition: {x: -0.99931073, y: -0.2928253, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

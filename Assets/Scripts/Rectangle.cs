@@ -7,7 +7,12 @@ public class Rectangle : MonoBehaviour, IPooledObject
     // Sprite of the object.
     private SpriteRenderer sprite;
     // Dictionary which contains connection lines and their points connected to the rectangle.
-    public Dictionary<GameObject, int> connections;
+    public Dictionary<Line, int> connections;
+
+    void Start()
+    {
+        connections = new Dictionary<Line, int>();
+    }
 
     // OnObjectSpawn is called when the object is spawned.
     public void OnObjectSpawn()
@@ -15,7 +20,16 @@ public class Rectangle : MonoBehaviour, IPooledObject
         // Get SpriteRenderer component and initialize the sprite.
         sprite = GetComponent<SpriteRenderer>();
         // Create and set new color to the sprite
-        Color newColor = new Color(Random.Range(0.0f, 1f), Random.Range(0.0f, 1f), Random.Range(0.0f, 1f));
+        Color newColor = new Color(Random.Range(0.01f, 1f), Random.Range(0.01f, 1f), Random.Range(0.01f, 1f));
         sprite.color = newColor;
+    }
+
+    public void Update()
+    {
+        foreach (Line line in connections.Keys)
+        {
+            line.UpdateLinePointPosition(connections[line], transform.position);
+            line.DrawCollider();
+        }
     }
 }

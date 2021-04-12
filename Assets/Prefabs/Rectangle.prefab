@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2280763069531517331}
   - component: {fileID: 2280763069531517333}
   - component: {fileID: 2280763069531517335}
-  - component: {fileID: 2280763069531517334}
+  - component: {fileID: 2077332490274410307}
   m_Layer: 8
   m_Name: Rectangle
   m_TagString: Untagged
@@ -118,10 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf3d164b7682fbd4388cf36d84fefeb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isChecker: 0
-  canSpawn: 0
-  spawnTag: 
---- !u!61 &2280763069531517334
+--- !u!61 &2077332490274410307
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
