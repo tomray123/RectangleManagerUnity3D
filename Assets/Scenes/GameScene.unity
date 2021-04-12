@@ -155,10 +155,10 @@ MonoBehaviour:
   pools:
   - tag: rect
     prefab: {fileID: 2280763069531517330, guid: 8f23566b6ce61f948a80dc7efd28456e, type: 3}
-    size: 3
+    size: 30
   - tag: line
     prefab: {fileID: 8281502106212425828, guid: 9fbf842711b903846a8aa06c1a276cc7, type: 3}
-    size: 5
+    size: 50
 --- !u!4 &650348550
 Transform:
   m_ObjectHideFlags: 0

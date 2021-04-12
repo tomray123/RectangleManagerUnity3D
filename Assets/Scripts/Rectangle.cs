@@ -20,7 +20,7 @@ public class Rectangle : MonoBehaviour, IPooledObject
         // Get SpriteRenderer component and initialize the sprite.
         sprite = GetComponent<SpriteRenderer>();
         // Create and set new color to the sprite
-        Color newColor = new Color(Random.Range(0.01f, 1f), Random.Range(0.01f, 1f), Random.Range(0.01f, 1f));
+        Color newColor = new Color(Random.Range(0.0f, 1f), Random.Range(0.0f, 1f), Random.Range(0.0f, 1f));
         sprite.color = newColor;
     }
 

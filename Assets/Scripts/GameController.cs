@@ -4,25 +4,19 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    public bool isDrawingLine;
-    public Line currentLine;
+    // Input Controller Interface.
     public IInputController inputController;
-    // Start is called before the first frame update
+
+    // Start is called before the first frame update.
     void Start()
     {
-        isDrawingLine = false;
         inputController = GetComponent<IInputController>();
     }
 
-    // Update is called once per frame
+    // Update is called once per frame.
     void Update()
     {
+        // Calling an interface method without binding to a specific input type.
         inputController.CheckAllInput("rect", "Rectangles", "Connections");
-        /*
-        inputController.InputToAddElement("rect", "Rectangles");
-        inputController.InputToDeleteElement();
-        inputController.InputToDragElement("Rectangles");
-        inputController.InputToDrawConnection("line", "Rectangles");
-        */
     }
 }

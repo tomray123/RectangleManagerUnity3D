@@ -20,7 +20,7 @@ public class Line : MonoBehaviour, IPooledObject
         line = GetComponent<LineRenderer>();
 
         // Create and set new color to the line
-        Color newColor = new Color(Random.Range(0.01f, 1f), Random.Range(0.01f, 1f), Random.Range(0.01f, 1f));
+        Color newColor = new Color(Random.Range(0.0f, 1f), Random.Range(0.0f, 1f), Random.Range(0.0f, 1f));
         line.startColor= newColor;
         line.endColor = newColor;
 
