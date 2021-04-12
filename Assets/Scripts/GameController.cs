@@ -17,9 +17,12 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        inputController.CheckAllInput("rect", "Rectangles", "Connections");
+        /*
         inputController.InputToAddElement("rect", "Rectangles");
-        //inputController.InputToDeleteElement();
+        inputController.InputToDeleteElement();
         inputController.InputToDragElement("Rectangles");
         inputController.InputToDrawConnection("line", "Rectangles");
+        */
     }
 }

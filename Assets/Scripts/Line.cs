@@ -37,7 +37,7 @@ public class Line : MonoBehaviour, IPooledObject
         }
     }
 
-    public void DeleteLine(int linePointIndex)
+    public void DeleteLinePoint(int linePointIndex)
     {
         if (linePointIndex == 0)
         {
@@ -54,7 +54,7 @@ public class Line : MonoBehaviour, IPooledObject
         Vector3 startPos = line.GetPosition(0);
         Vector3 endPos = line.GetPosition(1);
         float lineLength = Vector3.Distance(startPos, endPos); // length of line
-        lineCollider.transform.localScale = new Vector3(lineLength, 0.1f, 0f); // size of collider is set where X is length of line, Y is width of line, Z will be set as per requirement
+        lineCollider.transform.localScale = new Vector3(lineLength, line.startWidth, 0f); // size of collider is set where X is length of line, Y is width of line, Z will be set as per requirement
         Vector3 midPoint = (startPos + endPos) / 2;
         lineCollider.transform.position = midPoint; // setting position of collider object
         

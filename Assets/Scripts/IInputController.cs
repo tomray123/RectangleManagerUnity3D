@@ -2,6 +2,8 @@
 
 public interface IInputController
 {
+    void CheckAllInput(string tag, string elementLayerName, string lineLayerName);
+    /*
     // Defines the input method for adding an element.
     void InputToAddElement(string tag, string layerName);
     // Defines the input method for deleting an element.
@@ -12,4 +14,5 @@ public interface IInputController
     void InputToDrawConnection(string tag, string layerName);
     // Defines the input method for drawing and finishing a connection (line).
     void InputToDeleteConnection();
+    */
 }

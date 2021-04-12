@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8281502106212425830}
   - component: {fileID: 8281502106212425831}
   - component: {fileID: 8281502106212425833}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.19953102
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -146,6 +146,7 @@ MonoBehaviour:
   line: {fileID: 0}
   begin: {fileID: 0}
   end: {fileID: 0}
+  lineCollider: {fileID: 0}
 --- !u!1 &8727462175338702002
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +158,7 @@ GameObject:
   - component: {fileID: 2790303545340212280}
   - component: {fileID: 8505566018999264694}
   - component: {fileID: 3750742928087062151}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -32,123 +32,32 @@ public class MouseController : MonoBehaviour, IInputController
         isDrawingConnection = false;
     }
 
-    // Defines the input method for adding an element.
-    public void InputToAddElement(string tag, string layerName)
-    {
-        // Getting layer's number and creating a layerMask.
-        int layerNumber = LayerMask.NameToLayer(layerName);
-        int layerMask = 1 << layerNumber;
-
-        if (isFirstClick)
-        {
-            timeBetweenClicks += Time.deltaTime;
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (!isDrawingConnection)
-            {
-                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, layerMask);
-                if (hit.collider != null)
-                {
-                    activeObject = hit.collider.gameObject;
-
-                    objectStartPosition = activeObject.transform.position;
-                    SpriteRenderer spriteRenderer = activeObject.GetComponent<SpriteRenderer>();
-
-                    if (spriteRenderer == null)
-                    {
-                        Debug.LogWarning("No SpriteRenderer component is attached to this GameObject.");
-                        return;
-                    }
-                    spriteRenderer.sortingOrder += 1;
-                }
-
-                // Set position to spawn an element.
-                Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                position.z = 0;
-
-                GameObject spawnedObject = ObjectPooler.Instance.SpawnFromPool(tag, position, Quaternion.identity);
-
-                // Check if spawnedObject exists.
-                if (spawnedObject == null)
-                {
-                    Debug.LogWarning("GameObject from pool with tag " + tag + " doesn't exist.");
-                    return;
-                }
-
-                if (!IsEmptySpace(spawnedObject, position, layerMask))
-                {
-                    spawnedObject.SetActive(false);
-                }
-
-
-                if (timeBetweenClicks > 0f && timeBetweenClicks < maxTimeBetweenClicks)
-                {
-                    secondClickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Vector2 distanceBetweenClicks = secondClickPosition - firstClickPosition;
-                    if (distanceBetweenClicks.magnitude < maxDoubleClickDistance)
-                    {
-                        Debug.Log("DoubleClick");
-                        if (activeObject != null)
-                        {
-                            Rectangle activeObjectScript = activeObject.GetComponent<Rectangle>();
-                            if (activeObjectScript == null)
-                            {
-                                Debug.LogWarning("No Rectangle component is attached to this GameObject.");
-                                return;
-                            }
-                            foreach (Line line in activeObjectScript.connections.Keys)
-                            {
-                                line.UpdateLinePointPosition(0, Vector3.zero);
-                                line.UpdateLinePointPosition(1, Vector3.zero);
-                                int indexPoint = 0;
-                                if (activeObjectScript.connections[line] == 0)
-                                {
-                                    indexPoint = 1;
-                                }
-                                line.DeleteLine(indexPoint);
-                                line.gameObject.SetActive(false);
-                            }
-                            activeObjectScript.connections.Clear();
-                            activeObject.SetActive(false);
-                            activeObject = null;
-                        }
-                        isFirstClick = false;
-                    }
-                }
-
-
-                isFirstClick = true;
-                firstClickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-                timeBetweenClicks = 0f;
-            } 
-        }        
-    }
-
     // Defines the input method for deleting an element.
     public void InputToDeleteElement()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (activeObject != null)
         {
-            Debug.Log(timeBetweenClicks);
-            if (timeBetweenClicks > 0f && timeBetweenClicks < maxTimeBetweenClicks)
+            Rectangle activeObjectScript = activeObject.GetComponent<Rectangle>();
+            if (activeObjectScript == null)
             {
-                secondClickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Vector2 distanceBetweenClicks = secondClickPosition - firstClickPosition;
-                if (distanceBetweenClicks.magnitude < maxDoubleClickDistance)
-                {
-                    Debug.Log("DoubleClick");
-                    if (activeObject != null)
-                    {
-                        activeObject.SetActive(false);
-                        activeObject = null;
-                    }
-                    isFirstClick = false;
-                }
+                Debug.LogWarning("No Rectangle component is attached to this GameObject.");
+                return;
             }
+            foreach (Line line in activeObjectScript.connections.Keys)
+            {
+                line.UpdateLinePointPosition(0, Vector3.zero);
+                line.UpdateLinePointPosition(1, Vector3.zero);
+                int indexPoint = 0;
+                if (activeObjectScript.connections[line] == 0)
+                {
+                    indexPoint = 1;
+                }
+                line.DeleteLinePoint(indexPoint);
+                line.gameObject.SetActive(false);
+            }
+            activeObjectScript.connections.Clear();
+            activeObject.SetActive(false);
+            activeObject = null;
         }
     }
 
@@ -284,12 +193,6 @@ public class MouseController : MonoBehaviour, IInputController
         }
     }
 
-    // Defines the input method for deleting a connection (line).
-    public void InputToDeleteConnection()
-    {
-
-    }
-
     public bool IsEmptySpace(GameObject objectToCheck, Vector2 position, int layerMask)
     {
         Collider2D collider = objectToCheck.GetComponent<Collider2D>();
@@ -322,5 +225,138 @@ public class MouseController : MonoBehaviour, IInputController
             Debug.Log("Found an intersection");
             return false;
         }
+    }
+
+    public int SingleOrDoubleClick()
+    {
+        if (isFirstClick)
+        {
+            timeBetweenClicks += Time.deltaTime;
+        }
+        if (timeBetweenClicks > 5f)
+        {
+            timeBetweenClicks = 0f;
+            isFirstClick = false;
+        }
+        
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (!isDrawingConnection)
+            {
+                Debug.Log(timeBetweenClicks);
+                if (timeBetweenClicks > 0f && timeBetweenClicks < maxTimeBetweenClicks)
+                {
+                    secondClickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector2 distanceBetweenClicks = secondClickPosition - firstClickPosition;
+                    if (distanceBetweenClicks.magnitude < maxDoubleClickDistance)
+                    {
+                        Debug.Log("DoubleClick");
+                        isFirstClick = false;
+                        timeBetweenClicks = 0f;
+                        return 2;
+                    }
+                }
+
+                isFirstClick = true;
+                firstClickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                timeBetweenClicks = 0f;
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    public void CheckAllInput(string tag, string elementLayerName, string lineLayerName)
+    {
+        // Getting layer's number and creating a layerMask.
+        int elementLayerNumber = LayerMask.NameToLayer(elementLayerName);
+        int elementLayerMask = 1 << elementLayerNumber;
+
+        // Getting layer's number and creating a layerMask.
+        int lineLayerNumber = LayerMask.NameToLayer(lineLayerName);
+        int lineLayerMask = 1 << lineLayerNumber;
+
+        switch (SingleOrDoubleClick())
+        {
+            case 1:
+                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+                
+                if (hit.collider != null)
+                {
+                    activeObject = hit.collider.gameObject;
+                    if (activeObject.layer == elementLayerNumber)
+                    {
+                        objectStartPosition = activeObject.transform.position;
+                        SpriteRenderer spriteRenderer = activeObject.GetComponent<SpriteRenderer>();
+
+                        if (spriteRenderer == null)
+                        {
+                            Debug.LogWarning("No SpriteRenderer component is attached to this GameObject.");
+                            return;
+                        }
+                        spriteRenderer.sortingOrder += 1;
+                    }
+                    else
+                    {
+                        activeObject = null;
+                    }
+                }
+                else
+                {
+                    // Set position to spawn an element.
+                    Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    position.z = 0;
+
+                    GameObject spawnedObject = ObjectPooler.Instance.SpawnFromPool(tag, position, Quaternion.identity);
+
+                    // Check if spawnedObject exists.
+                    if (spawnedObject == null)
+                    {
+                        Debug.LogWarning("GameObject from pool with tag " + tag + " doesn't exist.");
+                        return;
+                    }
+
+                    if (!IsEmptySpace(spawnedObject, position, elementLayerMask))
+                    {
+                        spawnedObject.SetActive(false);
+                    }
+                }
+
+                break;
+
+            case 2:
+
+                mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, elementLayerMask);
+                if (hit.collider != null)
+                {
+                    activeObject = hit.collider.gameObject;
+                    InputToDeleteElement();
+                }
+
+                hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, lineLayerMask);
+                if (hit.collider != null)
+                {
+                    activeObject = hit.collider.gameObject;
+                    GameObject line = activeObject.transform.parent.gameObject;
+                    activeObject = null;
+                    Line lineScript = line.GetComponent<Line>();
+                    if (lineScript == null)
+                    {
+                        Debug.LogWarning("No Line component is attached to this GameObject.");
+                        return;
+                    }
+                    lineScript.DeleteLinePoint(0);
+                    lineScript.DeleteLinePoint(1);
+                    line.SetActive(false);
+                }
+
+                break;
+        }
+
+        InputToDragElement(elementLayerName);
+        InputToDrawConnection("line", "Rectangles");
     }
 }
