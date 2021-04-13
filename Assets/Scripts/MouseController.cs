@@ -68,40 +68,38 @@ public class MouseController : MonoBehaviour, IInputController
             case 1:
 
                 Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+                hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, elementLayerMask);
 
-                // If some object was clicked, then check the layer of this object.
+                // If the clicked object is an element (rectangle), then set its start position in case of dragging and increase the sorting order in layers.
                 if (hit.collider != null)
                 {
                     activeObject = hit.collider.gameObject;
 
-                    // If the clicked object is an element (rectangle), then set its start position in case of dragging and increase the sorting order in layers.
-                    if (activeObject.layer == elementLayerNumber)
+                    objectStartPosition = activeObject.transform.position;
+                    SpriteRenderer spriteRenderer = activeObject.GetComponent<SpriteRenderer>();
+
+                    // Set the offset between mouse position and elemnet position.
+                    dragOffset = objectStartPosition - mousePosition;
+
+                    // Checking for the existence of a SpriteRenderer script attached to this object.
+                    if (spriteRenderer == null)
                     {
-                        objectStartPosition = activeObject.transform.position;
-                        SpriteRenderer spriteRenderer = activeObject.GetComponent<SpriteRenderer>();
-
-                        // Set the offset between mouse position and elemnet position.
-                        dragOffset = objectStartPosition - mousePosition;
-
-                        // Checking for the existence of a SpriteRenderer script attached to this object.
-                        if (spriteRenderer == null)
-                        {
-                            Debug.LogWarning("No SpriteRenderer component is attached to this GameObject.");
-                            return;
-                        }
-
-                        spriteRenderer.sortingOrder += 1;
+                        Debug.LogWarning("No SpriteRenderer component is attached to this GameObject.");
+                        return;
                     }
-                    else
-                    {
-                        activeObject = null;
-                    }
+
+                    spriteRenderer.sortingOrder += 1;
                 }
                 else
                 {
+                    hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, lineLayerMask);
+
                     // If none of objects were clicked, then try to spawn an element.
-                    SpawnAnElement(elementTag, elementLayerNumber, mousePosition);
+                    if (hit.collider == null)
+                    {
+                        
+                        SpawnAnElement(elementTag, elementLayerNumber, mousePosition);
+                    }
                 }
 
                 break;
