@@ -2,5 +2,6 @@
 
 public interface IInputController
 {
-    void CheckAllInput(string tag, string elementLayerName, string lineLayerName);
+    // CheckAllInput must contain input handling.
+    void CheckAllInput(string elementTag, string elementLayerName, string lineLayerName);
 }

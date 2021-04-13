@@ -7,9 +7,11 @@ public class Line : MonoBehaviour, IPooledObject
     // LineRenderer instance (just line).
     public LineRenderer line;
 
+    // Elements to which the line is attached.
     public Rectangle begin;
     public Rectangle end;
 
+    // Object to handle line's collider.
     public GameObject lineCollider;
 
 
@@ -37,6 +39,7 @@ public class Line : MonoBehaviour, IPooledObject
         }
     }
 
+    // DeleteLinePoint detaching line points from the elements by point index.
     public void DeleteLinePoint(int linePointIndex)
     {
         if (linePointIndex == 0)
@@ -49,16 +52,18 @@ public class Line : MonoBehaviour, IPooledObject
         }
     }
 
+    // Update line's collider position and rotation.
     public void DrawCollider()
     {
+        // Setting scale and position of the collider.
         Vector3 startPos = line.GetPosition(0);
         Vector3 endPos = line.GetPosition(1);
-        float lineLength = Vector3.Distance(startPos, endPos); // length of line
-        lineCollider.transform.localScale = new Vector3(lineLength, line.startWidth, 0f); // size of collider is set where X is length of line, Y is width of line, Z will be set as per requirement
+        float lineLength = Vector3.Distance(startPos, endPos);
+        lineCollider.transform.localScale = new Vector3(lineLength, line.startWidth, 0f); 
         Vector3 midPoint = (startPos + endPos) / 2;
-        lineCollider.transform.position = midPoint; // setting position of collider object
+        lineCollider.transform.position = midPoint;
         
-        // Following lines calculate the angle between startPos and endPos
+        // Following lines calculate the angle between startPos and endPos.
         float angle = (Mathf.Abs(startPos.y - endPos.y) / Mathf.Abs(startPos.x - endPos.x));
         if ((startPos.y < endPos.y && startPos.x > endPos.x) || (endPos.y < startPos.y && endPos.x > startPos.x))
         {

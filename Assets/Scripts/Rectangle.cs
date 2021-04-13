@@ -24,8 +24,10 @@ public class Rectangle : MonoBehaviour, IPooledObject
         sprite.color = newColor;
     }
 
+    // Update is called once per frame.
     public void Update()
     {
+        // Updating coordinates and collider positions of attached lines.
         foreach (Line line in connections.Keys)
         {
             line.UpdateLinePointPosition(connections[line], transform.position);
